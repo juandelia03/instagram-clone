@@ -6,7 +6,6 @@ const Navbar = () => {
   return (
     <View style={styles.navbarContainer}>
         <Image source={require('../assets/logo.png')}  />
-        <Image source={require('../assets/biza.jpeg')} style={styles.profilePic}/>
     </View>
   )
 }
@@ -14,7 +13,7 @@ const styles = StyleSheet.create({
     navbarContainer:{
         flex:1,
         flexDirection:'row',
-        minHeight:100,
+        minHeight:Platform.OS == 'ios' ? 100:60,
         justifyContent:'space-between',
         alignItems:'center',
         backgroundColor:'black',

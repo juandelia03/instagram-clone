@@ -9,7 +9,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" barStyle='light-content'/>
-        <Navbar/>
+      <Navbar/>
     </View>
   );
 }
@@ -17,11 +17,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    // backgroundColor: '#fff',
+    backgroundColor: 'black',
     // alignItems: 'center',
     // justifyContent: 'center',
   },
-  StatusBar:{
-    color:'white'
-  }
+
 });
