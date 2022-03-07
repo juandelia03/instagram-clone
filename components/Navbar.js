@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { Image, Platform, StyleSheet, Text, View } from 'react-native'
+import { Image, Platform, StyleSheet, View } from 'react-native'
 
 const Navbar = () => {
   return (
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         backgroundColor:'black',
         paddingTop: Platform.OS == 'ios' ? 30:0,
         paddingHorizontal:20,
+
     },
     profilePic:{
         width:40,
