@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
-    minHeight: 150,
+    alignItems: "center",
+    height: 60,
     backgroundColor: "black",
   },
   icon: {
-    marginBottom: "auto",
     width: 32,
     height: 32,
     marginHorizontal: 10,

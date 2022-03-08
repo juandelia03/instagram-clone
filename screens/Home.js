@@ -1,5 +1,10 @@
 import React from "react";
-import { ScrollView, View, TouchableWithoutFeedback } from "react-native";
+import {
+  ScrollView,
+  View,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+} from "react-native";
 import BottomBar from "../components/BottomBar";
 import Navbar from "../components/Navbar";
 import Post from "../components/Post";
@@ -15,12 +20,10 @@ const Home = ({ navigation }) => {
     caption: "la caption que puso biza",
   };
   return (
-    <View style={{ backgroundColor: "black" }}>
+    <SafeAreaView style={{ backgroundColor: "black" }}>
       <Navbar />
-      <View>
+      <ScrollView>
         <Stories />
-      </View>
-      <ScrollView style={{ marginBottom: 180 }}>
         <Post
           username={post.username}
           profilePic={post.profilePic}
@@ -39,11 +42,12 @@ const Home = ({ navigation }) => {
           commentsAmount={post.comments.length}
           caption={post.caption}
         />
+        <View style={{ marginBottom: 50 }} />
       </ScrollView>
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
         <BottomBar navigation={navigation} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
