@@ -8,22 +8,29 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
   const [active, setActive] = useState(false);
+  const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   useEffect(() => {
-    if (email != "" && password != "") {
+    if (email != "" && password != "" && user != "") {
       if (active == false) {
         setActive(true);
       }
     } else {
       setActive(false);
     }
-  }, [email, password]);
+  }, [email, password, user]);
   return (
     <SafeAreaView style={styles.loginContainer}>
       <Image source={require("../assets/logo.png")} style={styles.Loginlogo} />
+      <TextInput
+        placeholderTextColor={"#545454"}
+        placeholder="Username"
+        style={styles.authInput}
+        onChangeText={(e) => setUser(e.toLocaleLowerCase())}
+      />
       <TextInput
         placeholderTextColor={"#545454"}
         placeholder="Email"
@@ -42,12 +49,12 @@ const Login = ({ navigation }) => {
           { backgroundColor: active ? "#0095f6" : "#114d79" },
         ]}
       >
-        <Text style={styles.loginText}> Login</Text>
+        <Text style={styles.loginText}> Register</Text>
       </TouchableOpacity>
       <View style={{ display: "flex", flexDirection: "row" }}>
-        <Text style={{ color: "gray" }}>Don't have an account yet? |</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={{ color: "#0095f6" }}> Register</Text>
+        <Text style={{ color: "gray" }}>Already have an account? |</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={{ color: "#0095f6" }}> Login</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -89,4 +96,4 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 });
-export default Login;
+export default Register;
