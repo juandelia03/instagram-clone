@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 
-const PostModal = () => {
+const PostModal = ({ username, profilePic }) => {
   const [image, setImage] = useState(null);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -25,34 +25,59 @@ const PostModal = () => {
     }
   };
 
+  const [input, setInput] = useState("");
   const onChangeHandler = (event) => {
     setInput(event);
   };
-  const [input, setInput] = useState("");
+
+  const post = async () => {
+    const post = {
+      username: username,
+      profilePic: profilePic,
+      likes: 0,
+      whoLiked: [],
+      photo: image,
+      comments: [],
+      commentsAmount: 0,
+      caption: input,
+    };
+  };
+
   return (
-    <View style={styles.modalContainer}>
-      <View style={{ display: "flex", alignItems: "center" }}>
-        <View style={{ backgroundColor: "#404040", width: 150, height: 150 }}>
-          <Image
-            source={
-              image ? { uri: image } : require("../assets/placeholderImage.png")
-            }
-            style={{ width: 150, height: 150 }}
-          />
+    <View>
+      <View style={styles.modalContainer}>
+        <View style={{ display: "flex", alignItems: "center" }}>
+          <View style={{ backgroundColor: "#404040", width: 150, height: 150 }}>
+            <Image
+              source={
+                image
+                  ? { uri: image }
+                  : require("../assets/placeholderImage.png")
+              }
+              style={{ width: 150, height: 150 }}
+            />
+          </View>
+          <TouchableOpacity onPress={pickImage}>
+            <Text style={{ color: "#0095f6", marginTop: 10 }}>
+              Select an Image
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={pickImage}>
-          <Text style={{ color: "#0095f6", marginTop: 10 }}>
-            Select an Image
+        <TextInput
+          style={styles.captionInput}
+          placeholder={"Your caption..."}
+          placeholderTextColor={"gray"}
+          onChangeText={onChangeHandler}
+          defaultValue={input}
+        />
+      </View>
+      <View style={styles.postButtonWrap}>
+        <TouchableOpacity>
+          <Text style={image ? styles.postButtonActive : styles.postButton}>
+            Post
           </Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.captionInput}
-        placeholder={"Your caption..."}
-        placeholderTextColor={"gray"}
-        onChangeText={onChangeHandler}
-        defaultValue={input}
-      />
     </View>
   );
 };
@@ -69,6 +94,18 @@ const styles = StyleSheet.create({
     marginBottom: "auto",
     marginLeft: 20,
     marginTop: 20,
+  },
+  postButtonWrap: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 30,
+  },
+  postButton: {
+    color: "gray",
+  },
+  postButtonActive: {
+    color: "#0095f6",
   },
 });
 

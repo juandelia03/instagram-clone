@@ -1,25 +1,27 @@
 {
   "expo": {
-    "name": "ig",
-    "slug": "ig",
+    "name": "Instagram Clone",
+    "slug": "instagram-clone",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "",
         "backgroundColor": "#FFFFFF"
       }
     },
@@ -33,6 +35,8 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "description": "I Built an instagram clone using react native, expo and firebase.  (Project made with the porpouse of learning some mobile dev)",
+    "githubUrl": "https://github.com/juandelia03/instagram-clone"
   }
 }

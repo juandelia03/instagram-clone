@@ -12,6 +12,7 @@ import {
 import Home from "./screens/Home";
 import Profile from "./screens/Profile";
 import Upload from "./screens/Upload";
+import Login from "./screens/Login";
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <StatusBar style="auto" barStyle="light-content" />
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Upload" component={Upload} />
