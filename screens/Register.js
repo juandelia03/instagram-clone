@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
@@ -8,7 +8,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { Context } from "../store";
 const Register = ({ navigation }) => {
+  const [state, setState] = useContext(Context);
   const [active, setActive] = useState(false);
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
@@ -54,7 +56,7 @@ const Register = ({ navigation }) => {
       <View style={{ display: "flex", flexDirection: "row" }}>
         <Text style={{ color: "gray" }}>Already have an account? |</Text>
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={{ color: "#0095f6" }}> Login</Text>
+          <Text style={{ color: "#0095f6" }}> Login </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

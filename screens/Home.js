@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import {
   ScrollView,
   View,
   TouchableWithoutFeedback,
   SafeAreaView,
 } from "react-native";
+import { Context } from "../store";
 import BottomBar from "../components/BottomBar";
 import Navbar from "../components/Navbar";
 import Post from "../components/Post";
 import Stories from "../components/Stories";
-
 const Home = ({ navigation }) => {
+  const [state, setState] = useContext(Context);
+  useEffect(() => {
+    console.log(state);
+  });
+
   let post = {
     username: "bizarap",
     profilePic: require("../assets/biza.jpeg"),

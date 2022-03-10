@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   View,
@@ -8,10 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { Context } from "../store";
 const Login = ({ navigation }) => {
+  const [store, setStore] = useContext(Context);
   const [active, setActive] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleGuest = () => {
+    setStore({ ...store, username: "Guest" });
+    navigation.navigate("Home");
+  };
   useEffect(() => {
     if (email != "" && password != "") {
       if (active == false) {
@@ -50,6 +56,9 @@ const Login = ({ navigation }) => {
           <Text style={{ color: "#0095f6" }}> Register</Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity onPress={handleGuest} style={{ marginTop: 10 }}>
+        <Text style={{ color: "#0095f6" }}>Take a look as a guest</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
