@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
 } from "react-native";
-import { Context } from "../store";
+import { Context } from "../Store";
 import BottomBar from "../components/BottomBar";
 import Navbar from "../components/Navbar";
 import Post from "../components/Post";

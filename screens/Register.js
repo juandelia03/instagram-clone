@@ -8,13 +8,40 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { Context } from "../store";
+import { db, auth } from "../Firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { Context } from "../Store";
 const Register = ({ navigation }) => {
+  useEffect(() => {
+    const get = async () => {
+      console.log("empezo");
+      const citiesRef = collection(db, "cities");
+      await setDoc(doc(citiesRef, "SF"), { users: "juan" });
+      console.log("termino");
+    };
+    get();
+  }, []);
   const [state, setState] = useContext(Context);
   const [active, setActive] = useState(false);
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleRegister = async () => {
+    if (active == true) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async () => {
+          console.log("created succesfully");
+        })
+        .catch((e) => console.log(e));
+    }
+    // const result = await addDoc(collection(db, "users"), {
+    //   user: "Juan",
+    // });
+    // console.log(result);
+  };
+
   useEffect(() => {
     if (email != "" && password != "" && user != "") {
       if (active == false) {
@@ -50,6 +77,7 @@ const Register = ({ navigation }) => {
           styles.LoginButton,
           { backgroundColor: active ? "#0095f6" : "#114d79" },
         ]}
+        onPress={handleRegister}
       >
         <Text style={styles.loginText}> Register</Text>
       </TouchableOpacity>

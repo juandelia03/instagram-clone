@@ -8,7 +8,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { Context } from "../store";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { db, auth } from "../Firebase";
+import { Context } from "../Store";
+
 const Login = ({ navigation }) => {
   const [store, setStore] = useContext(Context);
   const [active, setActive] = useState(false);
@@ -17,6 +20,12 @@ const Login = ({ navigation }) => {
   const handleGuest = () => {
     setStore({ ...store, username: "Guest" });
     navigation.navigate("Home");
+  };
+  const handleLogin = () => {
+    console.log(email, password);
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => console.log("inicio de sesion"))
+      .catch((e) => console.log(e));
   };
   useEffect(() => {
     if (email != "" && password != "") {
@@ -47,6 +56,7 @@ const Login = ({ navigation }) => {
           styles.LoginButton,
           { backgroundColor: active ? "#0095f6" : "#114d79" },
         ]}
+        onPress={handleLogin}
       >
         <Text style={styles.loginText}> Login</Text>
       </TouchableOpacity>

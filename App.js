@@ -14,8 +14,8 @@ import Profile from "./screens/Profile";
 import Upload from "./screens/Upload";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
-import Store from "./store";
-export default function App() {
+import Store from "./Store";
+const App = () => {
   const Stack = createNativeStackNavigator();
   return (
     <Store>
@@ -23,8 +23,8 @@ export default function App() {
         <StatusBar style="auto" barStyle="light-content" />
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Upload" component={Upload} />
@@ -33,7 +33,7 @@ export default function App() {
       </SafeAreaView>
     </Store>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -44,3 +44,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
 });
+export default App;
