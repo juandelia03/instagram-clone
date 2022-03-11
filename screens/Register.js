@@ -7,39 +7,63 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { db, auth } from "../Firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  addDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { Context } from "../Store";
 const Register = ({ navigation }) => {
-  useEffect(() => {
-    const get = async () => {
-      console.log("empezo");
-      const citiesRef = collection(db, "cities");
-      await setDoc(doc(citiesRef, "SF"), { users: "juan" });
-      console.log("termino");
-    };
-    get();
-  }, []);
   const [state, setState] = useContext(Context);
   const [active, setActive] = useState(false);
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const isAvailable = async () => {
+    const username = user.toLocaleLowerCase();
+    let available = true;
+    const q = query(collection(db, "users"), where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      available = false;
+    });
+    return available;
+  };
+
   const handleRegister = async () => {
-    if (active == true) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async () => {
-          console.log("created succesfully");
-        })
-        .catch((e) => console.log(e));
+    const available = await isAvailable();
+    if (active == true && available == true) {
+      try {
+        console.log("start");
+        await createUserWithEmailAndPassword(auth, email, password);
+        await addDoc(collection(db, "users"), {
+          username: user.toLocaleLowerCase(),
+          email: email.toLocaleLowerCase(),
+          posts: [],
+          profilePic: user.toLocaleLowerCase() + "_profile_pic.jpeg",
+          followers: [],
+          follows: [],
+          saved: [],
+        });
+        navigation.navigate("Login");
+      } catch (e) {
+        console.log(e.message);
+      }
+    } else {
+      if (active == true) {
+        Alert.alert("Error", "Username already in use", [{ text: "ok" }]);
+      } else {
+        Alert.alert("Error", "Complete the fields", [{ text: "OK" }]);
+      }
     }
-    // const result = await addDoc(collection(db, "users"), {
-    //   user: "Juan",
-    // });
-    // console.log(result);
   };
 
   useEffect(() => {

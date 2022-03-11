@@ -1,12 +1,9 @@
 import React, { useState, createContext } from "react";
-const initialState = {
-  reactiveValue: "soy para todos",
-};
 
 export const Context = createContext();
 
 const Store = ({ children }) => {
-  const [state, setState] = useState({ value: "algo" });
+  const [state, setState] = useState({ value: "algo", valor: 2 });
   return (
     <Context.Provider value={[state, setState]}>{children}</Context.Provider>
   );

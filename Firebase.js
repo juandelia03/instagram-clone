@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 import { getFirestore, initializeFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -15,12 +16,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
-// const firestore = initializeFirestore(app, {
-//   experimentalForceLongPolling: true,
-// });
-export const db = getFirestore(app, {
-  experimentalForceLongPolling: true,
-});
-// export const db = getFirestore(app, {
-//   experimentalForceLongPolling: true,
-// });
+export const storage = getStorage();
+export const db = getFirestore();

@@ -7,8 +7,10 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "../Firebase";
 import { Context } from "../Store";
 
@@ -18,14 +20,32 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleGuest = () => {
-    setStore({ ...store, username: "Guest" });
+    setStore({ ...store, user: "Guest" });
     navigation.navigate("Home");
   };
-  const handleLogin = () => {
-    console.log(email, password);
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => console.log("inicio de sesion"))
-      .catch((e) => console.log(e));
+
+  const getUserInfo = async () => {
+    let user;
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", email.toLocaleLowerCase())
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      user = doc.data();
+    });
+    return user;
+  };
+
+  const handleLogin = async () => {
+    const user = await getUserInfo();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setStore({ ...store, user: user });
+      navigation.navigate("Home");
+    } catch (e) {
+      Alert.alert("Error", "Invalid credentials", [{ text: "ok" }]);
+    }
   };
   useEffect(() => {
     if (email != "" && password != "") {
