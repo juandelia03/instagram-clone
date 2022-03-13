@@ -5,8 +5,6 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native";
-import { ref, getDownloadURL } from "firebase/storage";
-import { storage } from "../Firebase";
 import { Context } from "../Store";
 
 const BottomBar = ({ navigation }) => {

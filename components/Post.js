@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,30 +8,93 @@ import {
   TextInput,
 } from "react-native";
 import { Context } from "../Store";
+import { db } from "../Firebase";
+import {
+  getDoc,
+  doc,
+  where,
+  query,
+  collection,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  increment,
+} from "firebase/firestore";
 const Post = ({
   username,
-  profilePic,
   likes,
+  whoLiked,
   photo,
   comments,
   commentsAmount,
   caption,
 }) => {
+  useEffect(() => {
+    getProfilePic();
+    getId();
+  }, []);
   const likeActive = require("../assets/likeActive.png");
   const like = require("../assets/like.png");
+  const [profilePic, setProfilePic] = useState(null);
   const [state, setState] = useContext(Context);
+  const [reactiveLike, setReactiveLike] = useState(likes);
+  const [id, setId] = useState();
+
+  const getProfilePic = async () => {
+    const result = await getDoc(doc(db, "users", state.user.id));
+    setProfilePic(result.data().profilePic);
+  };
+
+  const getId = async () => {
+    const q = query(collection(db, "posts"), where("photo", "==", photo));
+    const snap = await getDocs(q);
+    snap.forEach((doc) => {
+      setId(doc.id);
+    });
+  };
+
+  const handleLike = async () => {
+    getId();
+    const res = await getDoc(doc(db, "posts", id));
+    whoLiked = res.data().whoLiked;
+    if (!whoLiked.includes(state.user.username)) {
+      console.log("like");
+      try {
+        await updateDoc(doc(db, "posts", id), {
+          whoLiked: arrayUnion(state.user.username),
+          likes: increment(1),
+        });
+        setReactiveLike(reactiveLike + 1);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      console.log("dislike");
+      await updateDoc(doc(db, "posts", id), {
+        whoLiked: arrayRemove(state.user.username),
+        likes: increment(-1),
+      });
+      setReactiveLike(reactiveLike - 1);
+    }
+    const update = await getDoc(doc(db, "posts", id));
+    whoLiked = update.data().whoLiked;
+    likes = update.data().likes;
+    setReactiveLike(likes);
+  };
+
   return (
     <View style={styles.post}>
       <View style={styles.postUser}>
-        <Image source={profilePic} style={styles.postProfilePic} />
+        <Image source={{ uri: profilePic }} style={styles.postProfilePic} />
         <Text style={styles.postUserName}>{username}</Text>
       </View>
       <Image source={{ uri: photo }} style={styles.postPhoto} />
       <View style={styles.postData}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleLike}>
           <Image source={like} style={{ width: 26, height: 26 }} />
         </TouchableOpacity>
-        <Text style={styles.postLikes}>{likes} likes</Text>
+        <Text style={styles.postLikes}>{reactiveLike} likes</Text>
         <View style={styles.caption}>
           <Text style={{ color: "white", fontWeight: "bold" }}>{username}</Text>
           <Text style={{ color: "white", marginLeft: 5 }}>{caption}</Text>

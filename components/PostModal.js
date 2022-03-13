@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import {
   Text,
@@ -9,14 +9,22 @@ import {
   StyleSheet,
 } from "react-native";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  arrayUnion,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { storage } from "../Firebase";
 import { db } from "../Firebase";
 const PostModal = ({ profilePic, user }) => {
+  useEffect(() => {
+    console.log(user);
+  });
   const [image, setImage] = useState(null);
   const [input, setInput] = useState("");
   let uniqueId = null;
-  let url = null;
   const onChangeHandler = (event) => {
     setInput(event);
   };
@@ -58,7 +66,10 @@ const PostModal = ({ profilePic, user }) => {
 
   const addReference = async (post) => {
     try {
-      await addDoc(collection(db, "posts"), post);
+      const result = await addDoc(collection(db, "posts"), post);
+      await updateDoc(doc(db, "users", user.id), {
+        posts: arrayUnion(result.id),
+      });
     } catch (e) {
       console.log(e);
     }
@@ -73,6 +84,7 @@ const PostModal = ({ profilePic, user }) => {
       comments: [],
       commentsAmount: 0,
       caption: input,
+      date: new Date(),
     };
     try {
       await uploadImage();
