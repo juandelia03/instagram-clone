@@ -10,11 +10,13 @@ import BottomBar from "../components/BottomBar";
 import Navbar from "../components/Navbar";
 import Post from "../components/Post";
 import Stories from "../components/Stories";
+import { ref, list } from "firebase/storage";
+import { storage } from "../Firebase";
 const Home = ({ navigation }) => {
   const [state, setState] = useContext(Context);
   useEffect(() => {
     console.log(state);
-  });
+  }, []);
 
   let post = {
     username: "bizarap",

@@ -8,9 +8,25 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-
-const PostModal = ({ username, profilePic }) => {
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+import { storage } from "../Firebase";
+import { db } from "../Firebase";
+const PostModal = ({ profilePic, user }) => {
   const [image, setImage] = useState(null);
+  const [input, setInput] = useState("");
+  let uniqueId = null;
+  let url = null;
+  const onChangeHandler = (event) => {
+    setInput(event);
+  };
+
+  const random = () => {
+    return (
+      new Date().getTime().toString() + Math.floor(Math.random() * 1000000)
+    );
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -19,28 +35,53 @@ const PostModal = ({ username, profilePic }) => {
       quality: 1,
     });
     console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
   };
 
-  const [input, setInput] = useState("");
-  const onChangeHandler = (event) => {
-    setInput(event);
+  const uploadImage = async () => {
+    if (image) {
+      try {
+        const img = await fetch(image);
+        const bytes = await img.blob();
+        uniqueId = await random();
+        const storageRef = ref(storage, `${user.username}/${uniqueId}.jpg`);
+        await uploadBytes(storageRef, bytes);
+        url = await getDownloadURL(storageRef);
+        console.log(url);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
+  const addReference = async (post) => {
+    try {
+      await addDoc(collection(db, "posts"), post);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const post = async () => {
     const post = {
-      username: username,
-      profilePic: profilePic,
+      username: user.username,
+      profilePic: user.profilePic,
       likes: 0,
       whoLiked: [],
-      photo: image,
+      photo: url,
       comments: [],
       commentsAmount: 0,
       caption: input,
     };
+    try {
+      await uploadImage();
+      post.photo = url;
+      await addReference(post);
+      console.log("done");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -72,7 +113,7 @@ const PostModal = ({ username, profilePic }) => {
         />
       </View>
       <View style={styles.postButtonWrap}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={post}>
           <Text style={image ? styles.postButtonActive : styles.postButton}>
             Post
           </Text>

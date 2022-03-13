@@ -17,8 +17,8 @@ import { Context } from "../Store";
 const Login = ({ navigation }) => {
   const [store, setStore] = useContext(Context);
   const [active, setActive] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("juan@gmail.com");
+  const [password, setPassword] = useState("Tiochele");
   const handleGuest = () => {
     setStore({ ...store, user: "Guest" });
     navigation.navigate("Home");
@@ -33,6 +33,7 @@ const Login = ({ navigation }) => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       user = doc.data();
+      user = { ...user, id: doc.id };
     });
     return user;
   };

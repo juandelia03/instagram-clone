@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import BottomBar from "../components/BottomBar";
 import * as ImagePicker from "expo-image-picker";
 import PostModal from "../components/PostModal";
-
+import { Context } from "../Store";
 const Upload = ({ navigation }) => {
+  const [state, setState] = useContext(Context);
   const [image, setImage] = useState(null);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -34,7 +35,7 @@ const Upload = ({ navigation }) => {
       <View style={styles.headerWrap}>
         <Text style={styles.header}>NEW POST</Text>
       </View>
-      <PostModal />
+      <PostModal user={state.user} />
       <View style={styles.bottomBar}>
         <BottomBar navigation={navigation} />
       </View>
