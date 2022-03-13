@@ -33,13 +33,15 @@ const Post = ({
   useEffect(() => {
     getProfilePic();
     getId();
+    getLikedStatus();
   }, []);
   const likeActive = require("../assets/likeActive.png");
   const like = require("../assets/like.png");
+  const [isLiked, setIsLiked] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
-  const [state, setState] = useContext(Context);
   const [reactiveLike, setReactiveLike] = useState(likes);
   const [id, setId] = useState();
+  const [state, setState] = useContext(Context);
 
   const getProfilePic = async () => {
     const result = await getDoc(doc(db, "users", state.user.id));
@@ -54,32 +56,42 @@ const Post = ({
     });
   };
 
+  const getLikedStatus = () => {
+    // if (whoLiked.includes(state.user.username)) {
+    //   setIsLiked(true);
+    // } else {
+    //   setIsLiked(false);
+    // }
+    setIsLiked(whoLiked.includes(state.user.username));
+  };
+
   const handleLike = async () => {
     getId();
     const res = await getDoc(doc(db, "posts", id));
     whoLiked = res.data().whoLiked;
     if (!whoLiked.includes(state.user.username)) {
-      console.log("like");
       try {
         await updateDoc(doc(db, "posts", id), {
           whoLiked: arrayUnion(state.user.username),
           likes: increment(1),
         });
         setReactiveLike(reactiveLike + 1);
+        setIsLiked(true);
       } catch (e) {
         console.log(e);
       }
     } else {
-      console.log("dislike");
       await updateDoc(doc(db, "posts", id), {
         whoLiked: arrayRemove(state.user.username),
         likes: increment(-1),
       });
+      setIsLiked(false);
       setReactiveLike(reactiveLike - 1);
     }
     const update = await getDoc(doc(db, "posts", id));
     whoLiked = update.data().whoLiked;
     likes = update.data().likes;
+    await getLikedStatus();
     setReactiveLike(likes);
   };
 
@@ -92,7 +104,10 @@ const Post = ({
       <Image source={{ uri: photo }} style={styles.postPhoto} />
       <View style={styles.postData}>
         <TouchableOpacity onPress={handleLike}>
-          <Image source={like} style={{ width: 26, height: 26 }} />
+          <Image
+            source={isLiked ? likeActive : like}
+            style={{ width: 26, height: 26 }}
+          />
         </TouchableOpacity>
         <Text style={styles.postLikes}>{reactiveLike} likes</Text>
         <View style={styles.caption}>
