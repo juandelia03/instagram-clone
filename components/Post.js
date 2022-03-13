@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Image,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-
+import { Context } from "../Store";
 const Post = ({
   username,
   profilePic,
@@ -19,13 +19,14 @@ const Post = ({
 }) => {
   const likeActive = require("../assets/likeActive.png");
   const like = require("../assets/like.png");
+  const [state, setState] = useContext(Context);
   return (
     <View style={styles.post}>
       <View style={styles.postUser}>
         <Image source={profilePic} style={styles.postProfilePic} />
         <Text style={styles.postUserName}>{username}</Text>
       </View>
-      <Image source={photo} style={styles.postPhoto} />
+      <Image source={{ uri: photo }} style={styles.postPhoto} />
       <View style={styles.postData}>
         <TouchableOpacity>
           <Image source={like} style={{ width: 26, height: 26 }} />
@@ -42,7 +43,10 @@ const Post = ({
         </TouchableOpacity>
         <View style={styles.commentsView}>
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <Image source={profilePic} style={styles.postProfilePic} />
+            <Image
+              source={{ uri: state.user.profilePic }}
+              style={styles.postProfilePic}
+            />
             <TextInput
               style={{ marginLeft: 10, color: "white" }}
               placeholder={"add a comment"}

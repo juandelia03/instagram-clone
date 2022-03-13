@@ -11,9 +11,9 @@ const Navbar = () => {
 };
 const styles = StyleSheet.create({
   navbarContainer: {
-    flex: 1,
     flexDirection: "row",
     minHeight: 60,
+    marginTop: 10,
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "black",

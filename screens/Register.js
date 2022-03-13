@@ -48,7 +48,8 @@ const Register = ({ navigation }) => {
           username: user.toLocaleLowerCase(),
           email: email.toLocaleLowerCase(),
           posts: [],
-          profilePic: user.toLocaleLowerCase() + "_profile_pic.jpeg",
+          profilePic:
+            "https://firebasestorage.googleapis.com/v0/b/instagram-b628b.appspot.com/o/profile_pic.jpeg?alt=media&token=ffbe71ca-e3a3-46ab-8a2a-e67054fb7008",
           followers: [],
           follows: [],
           saved: [],
