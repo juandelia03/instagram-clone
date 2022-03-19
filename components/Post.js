@@ -29,8 +29,10 @@ const Post = ({
   comments,
   commentsAmount,
   caption,
+  date,
 }) => {
   useEffect(() => {
+    console.log(date.toDate().toDateString());
     getProfilePic();
     getId();
     getLikedStatus();
@@ -135,7 +137,9 @@ const Post = ({
             <Text style={{ color: "#0095f6" }}>Publish</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ color: "gray", marginBottom: 20 }}>1 Hour Ago</Text>
+        <Text style={{ color: "gray", marginBottom: 20 }}>
+          {date.toDate().toDateString()}
+        </Text>
       </View>
     </View>
   );

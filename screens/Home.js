@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-    // console.log(state);
+    console.log(state);
     getPosts();
   }, []);
 
@@ -55,6 +55,7 @@ const Home = ({ navigation }) => {
             comments={post.comments}
             commentsAmount={post.comments.length}
             caption={post.caption}
+            date={post.date}
             key={post.photo}
           />
         ))}
