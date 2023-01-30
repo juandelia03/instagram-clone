@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log(state);
+    // console.log(state);
     getPosts();
   }, []);
 

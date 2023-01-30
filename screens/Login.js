@@ -39,12 +39,13 @@ const Login = ({ navigation }) => {
   };
 
   const handleLogin = async () => {
-    const user = await getUserInfo();
     try {
+      const user = await getUserInfo();
       await signInWithEmailAndPassword(auth, email, password);
       setStore({ ...store, user: user });
       navigation.navigate("Home");
     } catch (e) {
+      console.log(e);
       Alert.alert("Error", "Invalid credentials", [{ text: "ok" }]);
     }
   };

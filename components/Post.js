@@ -32,7 +32,6 @@ const Post = ({
   date,
 }) => {
   useEffect(() => {
-    console.log(date.toDate().toDateString());
     getProfilePic();
     getId();
     getLikedStatus();
